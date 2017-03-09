@@ -25,8 +25,12 @@ use \OCP\Security\ISecureRandom;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCA\UserOidc\OpenIDConnectClient;
 
+
 class AuthController extends Controller {
 
+	function preg_whspc($string) {
+	    return preg_replace('/\s+/', '', $string);
+	}
 
 	private $userId;
 
@@ -56,18 +60,51 @@ class AuthController extends Controller {
         $this->oidc->setRedirectUrl($redirectUrl);
         $this->oidc->authenticate();
 
-        $email = $this->oidc->requestUserInfo('email');
-        $name = $this->oidc->requestUserInfo('name');
-        $user_id = $provider . '__' . $this->oidc->requestUserInfo('sub');
+				$this->session['oidc_access_token'] = $this->oidc->getAccessToken();
+				$this->log->debug('Got access token:' . $this->session['oidc_access_token']);
+				$this->session['oidc_id_token'] = $this->oidc->getIdToken();
+				$this->log->debug('Got id token:' . $this->session['oidc_id_token']);
+
+				$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
+				$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim']);
+				$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
+        $user_sub = reset($sub_array);
+        $connector = end($sub_array);
+				$this->log->debug('Got user from sub:' . $user_sub);
+				$this->log->debug('Got connector from sub:' . $connector);
+
+				if (strcmp($connector, 'github') == 0) {
+					$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
+					$this->log->debug('Got name claim:' . $this->session['oidc_name_claim']);
+					$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();
+					$this->log->debug('Got email claim:' . $this->session['oidc_email_claim']);
+
+					$name_nowhspc = $this->preg_whspc($this->session['oidc_name_claim']);
+
+					$user_id = implode('_', array($name_nowhspc,$connector));
+					$email = $this->session['oidc_email_claim'];
+					$name = $this->session['oidc_name_claim'];
+				} elseif (strcmp($connector, 'mitre') == 0) {
+					$name_nowhspc = $this->preg_whspc($user_sub);
+
+					$user_id = implode('_',array($name_nowhspc,$connector));
+					$email = 'dummy@mail.org';
+					$name =  'Dummy MacName';
+				} else {
+					$this->log->debug('Got sub from unknown connector');
+				}
+        #$email = $this->oidc->requestUserInfo('email');
+        #$name = $this->oidc->requestUserInfo('name');
+        #$user_id = $provider . '__' . $this->oidc->requestUserInfo('sub');
 
         $user = $this->usermanager->get($user_id);
         if(!$user) {
-            $user = $this->createUser($user_id, $name, $email);
+            $this->log->debug(implode(' ',array('Got unknown user:',$user_id,'Please add to db. Admin rights requiered!')));
         }
         if(!$user) {
             return new RedirectResponse('/');
         }
-        $this->session['oidc_access_token'] = $this->oidc->getAccessToken();
+
         $this->doLogin($user, $user_id);
         return new RedirectResponse('/');
 
@@ -82,7 +119,7 @@ class AuthController extends Controller {
             if ($this->usersession->isLoggedIn()) {
             }
         }
-                
+
     }
 
     private function createUser($uid, $name, $email) {

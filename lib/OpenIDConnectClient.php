@@ -49,4 +49,20 @@ class OpenIDConnectClient {
     public function getAccessToken() {
         return $this->oidc->getAccessToken();
     }
+
+    public function getIdToken() {
+        return $this->oidc->getIdToken();
+    }
+
+    public function getSubClaim() {
+        return $this->oidc->getSubClaim();
+    }
+
+    public function getNameClaim() {
+        return $this->oidc->getNameClaim();
+    }
+
+    public function getEmailClaim() {
+        return $this->oidc->getEmailClaim();
+    }
 }

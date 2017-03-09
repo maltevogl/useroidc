@@ -1,5 +1,13 @@
 {
+
+  "repositories": [
+       {
+           "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
+           "type": "git"
+       }
+   ],
+
     "require": {
-        "jumbojett/openid-connect-php": "0.1.*"
+        "jumbojett/openid-connect-php": "master-dev"
     }
 }

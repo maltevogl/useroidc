@@ -4,16 +4,16 @@
     <name>User Oidc</name>
     <description>OpenID Connect authentication</description>
     <licence>AGPL</licence>
-    <author>Sigmund Augdal</author>
-    <version>0.0.1</version>
+    <author>Malte Vogl, based on work by Sigmund Augdal</author>
+    <version>0.0.2</version>
     <namespace>UserOidc</namespace>
     <category>other</category>
     <dependencies>
-        <owncloud min-version="9" max-version="9.1"/>
+        <nextcloud min-version="9" max-version="11"/>
     </dependencies>
     <types>
 		<authentication/>
 		<prelogin/>
 	</types>
-      
+
 </info>
