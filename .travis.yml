@@ -29,7 +29,7 @@ before_install:
     - sudo apt-get update
     - sudo apt-get -y install python3-pip firefox #mariadb-server sudo apt-get install 
     - sudo pip install requests setuptools
-    - sudo pip install ocdev
+    - sudo pip install git+https://github.com/owncloudarchive/ocdev.git
     - nvm install 5.9
     - npm install -g npm@latest
     - make
