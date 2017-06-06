@@ -1,0 +1,3 @@
+[submodule "jumbojett-openid-connect-php"]
+	path = vendor/jumbojett/openid-connect-php
+	url = https://github.com/jumbojett/OpenID-Connect-PHP.git
