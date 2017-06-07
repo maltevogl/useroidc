@@ -1,8 +1,11 @@
 {
+  "config": {
+          "secure-http": false
+  },
 
   "repositories": [
        {
-           "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
+           "url": "http://github.com/jumbojett/OpenID-Connect-PHP.git",
            "type": "git"
        }
    ],
