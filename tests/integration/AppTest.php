@@ -11,7 +11,7 @@
 //namespace OCA\UserOidc\Controller;
 
 use OCP\AppFramework\App;
-#use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 //use Test\TestCase;
 
 
@@ -20,7 +20,7 @@ use OCP\AppFramework\App;
  * directly from the container, only pass in mocks if needed and run your tests
  * against the database
  */
-class AppTest extends \Test\TestCase {
+class AppTest extends TestCase {
 
     private $container;
 
