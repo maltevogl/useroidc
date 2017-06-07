@@ -8,6 +8,7 @@
  * @author Sigmund Augdal <sigmund.augdal@uninett.no>
  * @copyright Sigmund Augdal 2016
  */
+namespace OCA\UserOidc\Controller;
 
 use OCP\AppFramework\App;
 use PHPUnit\Framework\TestCase;
