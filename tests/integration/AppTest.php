@@ -10,7 +10,8 @@
  */
 
 use OCP\AppFramework\App;
-use Test\TestCase;
+use PHPUnit\Framework\TestCase;
+//use Test\TestCase;
 
 
 /**
