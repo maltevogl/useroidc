@@ -8,10 +8,10 @@
  * @author Sigmund Augdal <sigmund.augdal@uninett.no>
  * @copyright Sigmund Augdal 2016
  */
-namespace OCA\UserOidc\Controller;
+//namespace OCA\UserOidc\Controller;
 
 use OCP\AppFramework\App;
-use PHPUnit\Framework\TestCase;
+#use PHPUnit\Framework\TestCase;
 //use Test\TestCase;
 
 
@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  * directly from the container, only pass in mocks if needed and run your tests
  * against the database
  */
-class AppTest extends TestCase {
+class AppTest extends \Test\TestCase {
 
     private $container;
 
