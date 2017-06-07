@@ -17,7 +17,7 @@ class OpenIDConnectClient {
 
     private $config, $oidc, $provider;
 
-	public function __construct(IConfig $config) {
+    public function __construct(IConfig $config) {
         $this->config = $config;
         $this->oidc = NULL;
         $this->provider = NULL;
