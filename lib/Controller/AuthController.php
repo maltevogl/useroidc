@@ -65,7 +65,7 @@ class AuthController extends Controller {
 				$this->session['oidc_id_token'] = $this->oidc->getIdToken();
 				$this->log->debug('Got id token:' . $this->session['oidc_id_token'],['app' => $this->appName]);
 
-				$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
+				$this->session['oidc_sub_claim'] = $this->session['oidc_id_token']['sub'];
 				$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim'],['app' => $this->appName]);
 				$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
         $user_sub = reset($sub_array);
