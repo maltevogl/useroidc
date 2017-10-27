@@ -9,7 +9,7 @@
     <namespace>UserOidc</namespace>
     <category>other</category>
     <dependencies>
-        <nextcloud min-version="9" max-version="11"/>
+        <nextcloud min-version="9" max-version="12"/>
     </dependencies>
     <types>
 		<authentication/>

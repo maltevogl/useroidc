@@ -1,5 +1,5 @@
 # User Oidc
-Place this app in **owncloud/apps/**
+Place this app in **nextcloud/apps/**
 
 Configure your openid connect providers in config.php like this:
 ```php

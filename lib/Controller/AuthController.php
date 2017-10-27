@@ -73,7 +73,7 @@ class AuthController extends Controller {
 				$this->log->debug('Got user from sub:' . $user_sub,['app' => $this->appName]);
 				$this->log->debug('Got connector from sub:' . $connector,['app' => $this->appName]);
 
-				if (strcmp($connector, 'github') == 0) {
+				if (strcmp($connector, 'github') == 0 or strcmp($connector, 'saml') == 0) {
 					$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
 					$this->log->debug('Got name claim:' . $this->session['oidc_name_claim'],['app' => $this->appName]);
 					$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();
