@@ -11,6 +11,6 @@
    ],
 
     "require": {
-        "jumbojett/openid-connect-php": "master-dev"
+        "jumbojett/openid-connect-php": "0.3.1"
     }
 }
