@@ -4,43 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bd965a29eeaf8e636cc0e20743e1a81",
+    "content-hash": "aacca155a06a9d47607c33402d9a1f5b",
     "packages": [
         {
             "name": "jumbojett/openid-connect-php",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
-                "reference": "fe79a249e36614ca111f2d253af3b991343bc23f"
+                "url": "http://github.com/maltevogl/OpenID-Connect-PHP.git",
+                "reference": "a74aa827cd10ea9294c3b70babc7867f7a764a22"
+            },
+            "archive": {
+                "exclude": [
+                    ".*"
+                ]
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "php": ">=5.4",
-                "phpseclib/phpseclib": "2.0.1"
+                "phpseclib/phpseclib": "2.0.7"
             },
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "OpenIDConnectClient.php"
+                    "src/"
                 ]
             },
             "description": "Bare-bones OpenID Connect client",
-            "time": "2017-02-20 20:38:13"
+            "time": "2017-11-23T10:56:50+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.1",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "ba6fb78f727cd09f2a649113b95468019e490585"
+                "reference": "f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ba6fb78f727cd09f2a649113b95468019e490585",
-                "reference": "ba6fb78f727cd09f2a649113b95468019e490585",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b",
+                "reference": "f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b",
                 "shasum": ""
             },
             "require": {
@@ -60,6 +65,9 @@
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "phpseclib/bootstrap.php"
+                ],
                 "psr-4": {
                     "phpseclib\\": "phpseclib/"
                 }
@@ -116,7 +124,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2016-01-18T17:07:21+00:00"
+            "time": "2017-10-23T05:04:54+00:00"
         }
     ],
     "packages-dev": [],

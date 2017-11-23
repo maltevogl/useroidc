@@ -7,13 +7,13 @@
     <author>Malte Vogl, based on work by Sigmund Augdal</author>
     <version>0.0.2</version>
     <namespace>UserOidc</namespace>
-    <category>other</category>
+    <category>Authentication</category>
     <dependencies>
-        <nextcloud min-version="9" max-version="11"/>
+        <nextcloud min-version="9" max-version="13"/>
     </dependencies>
     <types>
-		<authentication/>
-		<prelogin/>
-	</types>
+		    <authentication/>
+		    <prelogin/>
+	  </types>
 
 </info>

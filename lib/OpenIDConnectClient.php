@@ -12,6 +12,8 @@
 namespace OCA\UserOidc;
 
 use OCP\IConfig;
+use Jumbojett\OpenIDConnectClient;
+
 
 class OpenIDConnectClient {
 
@@ -26,7 +28,7 @@ class OpenIDConnectClient {
     public function setProvider($provider) {
         $this->provider = $provider;
         $oidc_config = $this->config->getSystemValue('openid_connect')[$provider];
-        $oidc = new \OpenIDConnectClient($oidc_config['provider'], $oidc_config['client_id'], $oidc_config['client_secret']);
+        $oidc = new OpenIDConnectClient($oidc_config['provider'], $oidc_config['client_id'], $oidc_config['client_secret']);
         $this->oidc = $oidc;
     }
 
