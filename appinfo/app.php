@@ -11,26 +11,19 @@
 
 namespace OCA\UserOidc\AppInfo;
 
-use OCP\AppFramework\App;
-use OC_App;
-
 require_once __DIR__ . '/autoload.php';
 
-class Application extends App {
+$container = $this->getContainer();
+$urlGenerator = $container->query('OCP\IURLGenerator');
+$config = $container->query('ServerContainer')->getConfig();
 
-  public function __construct () {
-    parent::__construct('useroidc');
-    $container = $this->getContainer();
-    $urlGenerator = $container->query('OCP\IURLGenerator');
-    $config = $container->query('ServerContainer')->getConfig();
-    foreach ($config->getSystemValue('openid_connect') as $id => $data) {
-        OC_APP::registerLogIn(array(
-            'href' => $urlGenerator->linkToRoute('useroidc.auth.login', ['provider' => $id]),
-            'name' => $data['displayName'],
-        ));
-    };
-  }
+foreach ($config->getSystemValue('openid_connect') as $id => $data) {
+    \OC_APP::registerLogIn(array(
+        'href' => $urlGenerator->linkToRoute('useroidc.auth.login', ['provider' => $id]),
+        'name' => $data['displayName'],
+    ));
 }
+
 /*
 $app = new App('useroidc');
 $container = $app->getContainer();
