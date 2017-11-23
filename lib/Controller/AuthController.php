@@ -65,7 +65,7 @@ class AuthController extends Controller {
 				$this->session['oidc_id_token'] = $this->oidc->getIdToken();
 				$this->log->debug('Got id token:' . $this->session['oidc_id_token'],['app' => $this->appName]);
 
-				$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
+				$this->session['oidc_sub_claim'] = $this->session['oidc_id_token']['sub'];
 				$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim'],['app' => $this->appName]);
 				$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
         $user_sub = reset($sub_array);
@@ -73,7 +73,7 @@ class AuthController extends Controller {
 				$this->log->debug('Got user from sub:' . $user_sub,['app' => $this->appName]);
 				$this->log->debug('Got connector from sub:' . $connector,['app' => $this->appName]);
 
-				if (strcmp($connector, 'github') == 0) {
+				if (strcmp($connector, 'github') == 0 or strcmp($connector, 'saml') == 0) {
 					$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
 					$this->log->debug('Got name claim:' . $this->session['oidc_name_claim'],['app' => $this->appName]);
 					$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();

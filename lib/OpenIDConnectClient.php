@@ -53,10 +53,10 @@ class OpenIDConnectClient {
     }
 
     public function getIdToken() {
-        return $this->oidc->getIdToken();
+        return $this->oidc->getIdTokenPayload();
     }
 
-    public function getSubClaim() {
+/**    public function getSubClaim() {
         return $this->oidc->getSubClaim();
     }
 
@@ -67,4 +67,5 @@ class OpenIDConnectClient {
     public function getEmailClaim() {
         return $this->oidc->getEmailClaim();
     }
+**/
 }
