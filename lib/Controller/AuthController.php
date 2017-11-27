@@ -133,7 +133,7 @@ class AuthController extends Controller {
 
     }
 
-    private function createUser($uid, $name, $email) {
+    public function createUser($uid, $name, $email) {
         if (preg_match( '/[^a-zA-Z0-9 _\.@\-]/', $uid)) {
             $this->log->debug('Invalid username "'.$uid.'", allowed chars "a-zA-Z0-9" and "_.@-" ', ['app' => $this->appName]);
             return false;
