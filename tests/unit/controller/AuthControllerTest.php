@@ -33,12 +33,12 @@ class AuthControllerTest extends TestCase {
 		$session = $this->getMockBuilder('OC\Session\Memory')->disableOriginalConstructor()->getMock();
 		$usersession = $this->getMockBuilder('OC\User\Session')->disableOriginalConstructor()->getMock();
         $usersession->method('getSession')->willReturn($session);
-        $oidc = $this->getMockBuilder('OCA\UserOidc\OpenIDConnectClient')->setConstructorArgs([$config])->getMock();
-        //$oidc = $this->getMock('OCA\UserOidc\OpenIDConnectClient');//->setConstructorArgs([$config])->getMock();
-        //$oidc->setConstructorArgs([$config]);
+        //$oidc = $this->getMockBuilder('OCA\UserOidc\OpenIDConnectClient')->setMethods(['createUser'])->setConstructorArgs([$config])->getMock();
+        $oidc = $this->getMock('OCA\UserOidc\OpenIDConnectClient');//->setConstructorArgs([$config])->getMock();
+        $oidc->setConstructorArgs([$config]);
 
 
-        $config->setSystemValue('openid_connect', ['provider' => [
+        $config->setSystemValue('openid_connect', ['github' => [
             'displayName' => 'Test Provider',
             'provider' => 'https://example.com',
             'client_id' => '1234',
@@ -52,7 +52,7 @@ class AuthControllerTest extends TestCase {
 
 
 	public function testLogin() {
-        $result = $this->controller->login("provider");
+        $result = $this->controller->login("github");
         $this->assertEquals('/', $result->getRedirectURL());
 	}
 
