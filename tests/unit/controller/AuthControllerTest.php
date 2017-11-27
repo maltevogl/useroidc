@@ -11,12 +11,12 @@
 
 namespace OCA\UserOidc\Controller;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 use OCP\AppFramework\Http\TemplateResponse;
 
 
-class AuthControllerTest extends PHPUnit_Framework_TestCase {
+class AuthControllerTest extends TestCase {
 
 	private $controller;
 	private $userId = 'john';
