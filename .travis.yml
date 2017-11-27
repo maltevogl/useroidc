@@ -1,47 +1,71 @@
-sudo: required
-dist: trusty
 language: php
 php:
     - 7
+    - 5.6
+    - hhvm
+
 env:
-    global:
-        - CORE_BRANCH=stable10
-    matrix:
-        - DB=pgsql
+  - DB=sqlite BRANCH=master
+  - DB=postgresql BRANCH=master
+  - DB=mysql BRANCH=master
 
 matrix:
     allow_failures:
-        - env: DB=pgsql CORE_BRANCH=master
-    fast_finish: true
+        - php: hhvm
 
-before_install:
-    # install firefox and enable a display for running JavaScript tests
-    #- git submodule update --init --recursive
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
-    - sudo apt-get update
-    - sudo apt-get -y install python3-pip firefox #mariadb-server sudo apt-get install
-    - sudo pip3 install requests setuptools
-    - sudo pip3 install git+https://github.com/owncloudarchive/ocdev.git
-    - nvm install v8.9.1
-    - npm install -g npm@latest
-    - make
-    # install core
-    - cd ../
-    - ocdev setup core --dir owncloud --branch $CORE_BRANCH --no-history
-    - mv useroidc owncloud/apps/
+install:
+  # install ocdev
+  - sudo apt-get -y install python3-jinja2 python3-setuptools
+  - sudo easy_install3 requests
+  - sudo easy_install3 ocdev
+  # set up postgresql
+  - createuser -U travis -s oc_autotest
+  # set up mysql
+  - mysql -e 'create database oc_autotest;'
+  - mysql -u root -e "CREATE USER 'oc_autotest'@'localhost';"
+  - mysql -u root -e "grant all on oc_autotest.* to 'oc_autotest'@'localhost';"
+  # install owncloud
+  - cd ..
+  - ocdev setup core --dir owncloud --branch $BRANCH --no-history
+  - cd owncloud
+  - ocdev ci $DB
+  # enable useroidc
+  - mv ../useroidc apps/
+  - php -f console.php app:enable useroidc
+
+# before_install:
+#     # install firefox and enable a display for running JavaScript tests
+#     #- git submodule update --init --recursive
+#     - export DISPLAY=:99.0
+#     - sh -e /etc/init.d/xvfb start
+#     - sudo apt-get update
+#     - sudo apt-get -y install python3-pip firefox #mariadb-server sudo apt-get install
+#     - sudo pip3 install requests setuptools
+#     - sudo pip3 install git+https://github.com/owncloudarchive/ocdev.git
+#     - nvm install v8.9.1
+#     - npm install -g npm@latest
+#     - make
+#     # install core
+#     - cd ../
+#     - ocdev setup core --dir owncloud --branch $CORE_BRANCH --no-history
+#     - mv useroidc owncloud/apps/
+
+# before_script:
+#     - createuser -U travis -s oc_autotest
+#     - mysql -u root -e 'create database oc_autotest;'
+#     - mysql -u root -e "CREATE USER 'oc_autotest'@'localhost' IDENTIFIED BY '';"
+#     - mysql -u root -e "grant all on oc_autotest.* to 'oc_autotest'@'localhost';"
+#     - cd owncloud
+#     - mkdir data
+#     - ./occ maintenance:install --database-name oc_autotest --database-user oc_autotest --admin-user admin --admin-pass admin --database $DB --database-pass=''
+#     - ./occ app:enable useroidc
+#     - ocdev server &
+#     - cd apps/useroidc
 
 before_script:
-    - createuser -U travis -s oc_autotest
-    - mysql -u root -e 'create database oc_autotest;'
-    - mysql -u root -e "CREATE USER 'oc_autotest'@'localhost' IDENTIFIED BY '';"
-    - mysql -u root -e "grant all on oc_autotest.* to 'oc_autotest'@'localhost';"
-    - cd owncloud
-    - mkdir data
-    - ./occ maintenance:install --database-name oc_autotest --database-user oc_autotest --admin-user admin --admin-pass admin --database $DB --database-pass=''
-    - ./occ app:enable useroidc
-    - ocdev server &
-    - cd apps/useroidc
+  - cd apps/useroidc
+  - phpenv config-add tests/travis/php.ini
 
 script:
-    - make test
+  - phpunit -c phpunit.xml
+  - phpunit -c phpunit.integration.xml
