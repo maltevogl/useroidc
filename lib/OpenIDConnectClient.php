@@ -12,7 +12,7 @@
 namespace OCA\UserOidc;
 
 use OCP\IConfig;
-use Jumbojett\OpenIDConnectClient;
+#use Jumbojett\OpenIDConnectClient;
 
 
 class OpenIDConnectClient {
