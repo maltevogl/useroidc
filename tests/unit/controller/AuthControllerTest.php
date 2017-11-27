@@ -27,17 +27,16 @@ class AuthControllerTest extends TestCase {
 		$logger = $this->getMockBuilder('OCP\ILogger')->getMock();
 		$urlgenerator = $this->getMockBuilder('OCP\IURLGenerator')->getMock();
 		$usermanager = $this->getMockBuilder('OCP\IUserManager')->getMock();
-        $user = $this->getMockBuilder('OCP\IUser')->getMock();
-        $usermanager->method('createUser')->willReturn($user);
+    $user = $this->getMockBuilder('OCP\IUser')->getMock();
+    $usermanager->method('createUser')->willReturn($user);
 		$securerandom = $this->getMockBuilder('OCP\Security\ISecureRandom')->getMock();
 		$session = $this->getMockBuilder('OC\Session\Memory')->disableOriginalConstructor()->getMock();
 		$usersession = $this->getMockBuilder('OC\User\Session')->disableOriginalConstructor()->getMock();
         $usersession->method('getSession')->willReturn($session);
-        //$oidc = $this->getMockBuilder('OCA\UserOidc\OpenIDConnectClient')->setConstructorArgs([$config])->getMock();
-        $oidc = $this->getMock('OCA\UserOidc\OpenIDConnectClient');//->setConstructorArgs([$config])->getMock();
-        $oidc->setConstructorArgs([$config]);
+        $oidc = $this->getMockBuilder('OCA\UserOidc\OpenIDConnectClient')->setConstructorArgs([$config])->getMock();
+        //$oidc = $this->getMock('OCA\UserOidc\OpenIDConnectClient');//->setConstructorArgs([$config])->getMock();
+        //$oidc->setConstructorArgs([$config]);
 
-	    print_r($oidc);
 
         $config->setSystemValue('openid_connect', ['provider' => [
             'displayName' => 'Test Provider',
