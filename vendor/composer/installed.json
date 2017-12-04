@@ -99,7 +99,7 @@
         "version_normalized": "0.3.1.0",
         "source": {
             "type": "git",
-            "url": "http://github.com/maltevogl/OpenID-Connect-PHP.git",
+            "url": "https://github.com/maltevogl/OpenID-Connect-PHP.git",
             "reference": "a74aa827cd10ea9294c3b70babc7867f7a764a22"
         },
         "archive": {

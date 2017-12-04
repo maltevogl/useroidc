@@ -1,19 +1,9 @@
 <?php
-/**
- * ownCloud - useroidc
- *
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
- *
- * @author Sigmund Augdal <sigmund.augdal@uninett.no>
- * @copyright Sigmund Augdal 2016
- */
-//namespace OCA\UserOidc\Controller;
+
+namespace OCA\UserOidc\Tests\Integration\Controller;
 
 use OCP\AppFramework\App;
-use PHPUnit\Framework\TestCase;
-//use Test\TestCase;
-
+use Test\TestCase;
 
 /**
  * This test shows how to make a small Integration Test. Query your class

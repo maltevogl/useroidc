@@ -1,13 +1,20 @@
 <?php
-/**
- * ownCloud - useroidc
- *
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
- *
- * @author Sigmund Augdal <sigmund.augdal@uninett.no>
- * @copyright Sigmund Augdal 2016
- */
 
-require_once __DIR__ . '/../tests/bootstrap.php';
-require_once __DIR__ . '/../appinfo/autoload.php';
+if (!defined('PHPUNIT_RUN')) {
+    define('PHPUNIT_RUN', 1);
+}
+
+require_once __DIR__ . '/../../../tests/bootstrap.php';
+#require_once __DIR__ . '/../vendor/autoload.php';
+
+// Fix for "Autoload path not allowed: .../tests/lib/testcase.php"
+\OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
+
+// Fix for "Autoload path not allowed: .../useroidc/tests/testcase.php"
+\OC_App::loadApp('useroidc');
+
+if(!class_exists('PHPUnit_Framework_TestCase')) {
+    require_once('PHPUnit/Autoload.php');
+}
+
+OC_Hook::clear();

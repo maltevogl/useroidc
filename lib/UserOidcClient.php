@@ -1,21 +1,11 @@
 <?php
-/**
- * ownCloud - useroidc
- *
- * This file is licensed under the Affero General Public License version 3 or
- * later. See the COPYING file.
- *
- * @author Sigmund Augdal <sigmund.augdal@uninett.no>
- * @copyright Sigmund Augdal 2016
- */
 
 namespace OCA\UserOidc;
 
 use OCP\IConfig;
-#use Jumbojett\OpenIDConnectClient;
+use Jumbojett\OpenIDConnectClient;
 
-
-class OpenIDConnectClient {
+class UserOidcClient {
 
     private $config, $oidc, $provider;
 
@@ -56,7 +46,7 @@ class OpenIDConnectClient {
         return $this->oidc->getIdTokenPayload();
     }
 
-/**    public function getSubClaim() {
+    public function getSubClaim() {
         return $this->oidc->getSubClaim();
     }
 
@@ -67,5 +57,4 @@ class OpenIDConnectClient {
     public function getEmailClaim() {
         return $this->oidc->getEmailClaim();
     }
-**/
 }

@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccfe4bf91f60bd0204743692c8479ceb",
+    "content-hash": "8ede2f01422387c1e9fb55926b92768a",
     "packages": [
         {
             "name": "jumbojett/openid-connect-php",
             "version": "0.3.1",
             "source": {
                 "type": "git",
-                "url": "http://github.com/maltevogl/OpenID-Connect-PHP.git",
+                "url": "https://github.com/maltevogl/OpenID-Connect-PHP.git",
                 "reference": "a74aa827cd10ea9294c3b70babc7867f7a764a22"
             },
             "archive": {

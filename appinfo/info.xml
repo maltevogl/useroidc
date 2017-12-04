@@ -1,19 +1,17 @@
 <?xml version="1.0"?>
-<info>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>useroidc</id>
     <name>User Oidc</name>
-    <description>OpenID Connect authentication</description>
-    <licence>AGPL</licence>
-    <author>Malte Vogl, based on work by Sigmund Augdal</author>
-    <version>0.0.2</version>
+    <summary>Login with OpenID Connect</summary>
+    <description><![CDATA[Based on https://github.com/UNINETT/useroidc. Adapted for use with CoreOS/Dex]]></description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author mail="mvogl@mpiwg-berlin.mpg.de" >Malte Vogl</author>
     <namespace>UserOidc</namespace>
-    <category>Authentication</category>
+    <category>auth</category>
+    <bugs>https://github.com/maltevogl/useroidc</bugs>
     <dependencies>
-        <nextcloud min-version="9" max-version="13"/>
+        <nextcloud min-version="11" max-version="13"/>
     </dependencies>
-    <types>
-		    <authentication/>
-		    <prelogin/>
-	  </types>
-
 </info>
