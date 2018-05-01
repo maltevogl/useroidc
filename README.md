@@ -17,6 +17,13 @@ Configure your openid connect providers in config.php like this:
       'client_id' => 'XXXXXX.apps.googleusercontent.com',
       'client_secret' => 'XXXXXX',
       'scopes' => array('openid','email','profile'),
+    ],
+    'keycloak' => [
+      'displayName' => 'Keycloak',
+      'provider' => 'https://<keycloak-url>/auth/realms/<realm-name>',
+      'client_id' => 'XXXXXX',
+      'client_secret' => 'XXXXXX',
+      'scopes' => array('openid','email','profile'),
     ]
   ],
 ```
