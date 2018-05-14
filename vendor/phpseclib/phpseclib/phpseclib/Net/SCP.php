@@ -32,6 +32,9 @@
 
 namespace phpseclib\Net;
 
+use phpseclib\Net\SSH1;
+use phpseclib\Net\SSH2;
+
 /**
  * Pure-PHP implementations of SCP.
  *
@@ -99,7 +102,9 @@ class SCP
      *
      * Connects to an SSH server
      *
-     * @param \phpseclib\Net\SSH1|\phpseclib\Net\SSH2 $ssh
+     * @param string $host
+     * @param int $port
+     * @param int $timeout
      * @return \phpseclib\Net\SCP
      * @access public
      */
@@ -299,9 +304,6 @@ class SCP
                     $response = $this->ssh->_get_binary_packet();
                     switch ($response[SSH1::RESPONSE_TYPE]) {
                         case NET_SSH1_SMSG_STDOUT_DATA:
-                            if (strlen($response[SSH1::RESPONSE_DATA]) < 4) {
-                                return false;
-                            }
                             extract(unpack('Nlength', $response[SSH1::RESPONSE_DATA]));
                             return $this->ssh->_string_shift($response[SSH1::RESPONSE_DATA], $length);
                         case NET_SSH1_SMSG_STDERR_DATA:

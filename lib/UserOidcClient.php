@@ -47,14 +47,14 @@ class UserOidcClient {
     }
 
     public function getSubClaim() {
-        return $this->oidc->getSubClaim();
+        return $this->oidc->getVerifiedClaims('sub');
     }
 
     public function getNameClaim() {
-        return $this->oidc->getNameClaim();
+        return $this->oidc->getVerifiedClaims('name');
     }
 
     public function getEmailClaim() {
-        return $this->oidc->getEmailClaim();
+        return $this->oidc->getVerifiedClaims('email');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace OCA\UserOidc\Controller;
 
+use OC\Files\Filesystem;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -136,6 +137,10 @@ class AuthController extends Controller {
 	 				$user = $this->usermanager->createUser($uid, $random_password);
 	 				$user->setEMailAddress($email);
 	 				$user->setDisplayName($name);
+					$user->setEnabled(true);
+					$user->setQuota('1GB');
+					
+					Filesystem::init($user->getUID(), '');
 	 				return $user;
 	 		}
 	 }
