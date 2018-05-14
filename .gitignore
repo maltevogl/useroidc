@@ -1,0 +1,16 @@
+*.pyc
+*~
+__pychache__
+myvenv
+eoa-venv
+db.sqlite3
+/static
+.DS_Store
+**/migrations
+*.pem
+*.crt
+*.key
+/workspace/nextcloud/mysql
+/workspace/nextcloud/data/data
+
+userlist.txt
