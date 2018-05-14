@@ -10,6 +10,8 @@ db.sqlite3
 *.pem
 *.crt
 *.key
+**/.git
+**/.github
 /workspace/nextcloud/mysql
 /workspace/nextcloud/data/data
 
