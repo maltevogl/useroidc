@@ -10,8 +10,10 @@ db.sqlite3
 *.pem
 *.crt
 *.key
-**/.git
-**/.github
+
+vendor
+composer.lock
+
 /workspace/nextcloud/mysql
 /workspace/nextcloud/data/data
 
