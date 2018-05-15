@@ -83,14 +83,12 @@ class UserOidcClient {
     }
 
     public function getNameClaim() {
-        $claims = $this -> getIdToken();
-        $name = $claims['name'];
-        return $this -> cleanString($name);
+        $name = $this -> getIdToken()['name'];
+        return $name;
     }
 
     public function getEmailClaim() {
-        $claims = $this -> getIdToken();
-        $email = $claims['email'];
-        return $this -> cleanString($email);
+        $email = $this -> getIdToken()['email'];
+        return $email;
     }
 }
