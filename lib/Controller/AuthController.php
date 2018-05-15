@@ -54,12 +54,7 @@ class AuthController extends Controller {
 	 		$this->oidc->setRedirectUrl($redirectUrl);
 	 		$this->oidc->authenticate();
 
-	 		$this->session['oidc_access_token'] = $this->oidc->getAccessToken();
-	 		$this->log->debug('Got access token:' . $this->session['oidc_access_token'],['app' => $this->appName]);
-	 		$this->session['oidc_id_token'] = $this->oidc->getIdToken();
-	 		$this->log->debug('Got id token:' . $this->session['oidc_id_token'],['app' => $this->appName]);
-
-	 		$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();#session['oidc_id_token']['sub'];
+	 		$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
 	 		$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim'],['app' => $this->appName]);
 	 		$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
 	 		$user_sub = reset($sub_array);
@@ -93,7 +88,7 @@ class AuthController extends Controller {
 
 	 		if(!$user) {
 	 				$this->log->debug(implode(' ',array('Got unknown user:',$user_id,'from connector',$connector)),['app' => $this->appName]);
-	 				$whitelist = file('apps/useroidc/whitelist.txt',FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	 				$whitelist = file( __DIR__ . '/../../whitelist.txt',FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 	 				$this->log->debug('Whitelist: '. implode(',',$whitelist),['app' => $this->appName]);
 	 				if( in_array($connector,$whitelist) )
 	 				{
@@ -139,7 +134,7 @@ class AuthController extends Controller {
 	 				$user->setDisplayName($name);
 					$user->setEnabled(true);
 					$user->setQuota('1GB');
-					
+
 					Filesystem::init($user->getUID(), '');
 	 				return $user;
 	 		}
