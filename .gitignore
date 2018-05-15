@@ -11,7 +11,9 @@ db.sqlite3
 *.crt
 *.key
 
-vendor
+build/
+node_modules/
+vendor/
 composer.lock
 
 /workspace/nextcloud/mysql
