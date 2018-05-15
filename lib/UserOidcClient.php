@@ -22,6 +22,14 @@ class UserOidcClient {
         $this->oidc = $oidc;
     }
 
+    public function decodeClaim($string) {
+        $this->oidc->base64url_decode($string);
+    }
+
+    public function cleanString($string) {
+        return preg_replace('/[\x00-\x1F\x7F]/u', ' ', decodeClaim($string));
+    }
+
     public function addScope($scope) {
         $this->oidc->addScope($scope);
     }
@@ -47,14 +55,18 @@ class UserOidcClient {
     }
 
     public function getSubClaim() {
-        return $this->oidc->getVerifiedClaims('sub');
+        $sub = $this->oidc->getVerifiedClaims('sub');
+        return cleanString($sub);
     }
 
     public function getNameClaim() {
-        return $this->oidc->getVerifiedClaims('name');
+        $name =  $this->oidc->getVerifiedClaims('name');
+        return cleanString($name);
     }
 
     public function getEmailClaim() {
-        return $this->oidc->getVerifiedClaims('email');
+        $email = $this->oidc->getVerifiedClaims('email');
+        return cleanString($email);
+
     }
 }
