@@ -54,6 +54,9 @@ class AuthController extends Controller {
 	 		$this->oidc->setRedirectUrl($redirectUrl);
 	 		$this->oidc->authenticate();
 
+			$this->session['oidc_access_token'] = $this->oidc->getAccessToken();
+	 		$this->session['oidc_id_token'] = $this->oidc->getIdToken();
+
 	 		$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
 	 		$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim'],['app' => $this->appName]);
 	 		$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
