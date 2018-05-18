@@ -1,17 +1,47 @@
 [
     {
+        "name": "jumbojett/openid-connect-php",
+        "version": "v0.5.0",
+        "version_normalized": "0.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
+            "reference": "5ccd26d02307002a1b599800eaa79dfddfb98145"
+        },
+        "archive": {
+            "exclude": [
+                ".*"
+            ]
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=5.4",
+            "phpseclib/phpseclib": "2.0.1"
+        },
+        "time": "2018-04-09T13:30:22+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "description": "Bare-bones OpenID Connect client"
+    },
+    {
         "name": "phpseclib/phpseclib",
-        "version": "2.0.7",
-        "version_normalized": "2.0.7.0",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b"
+            "reference": "ba6fb78f727cd09f2a649113b95468019e490585"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b",
-            "reference": "f4b6a522dfa1fd1e477c9cfe5909d5b31f098c0b",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ba6fb78f727cd09f2a649113b95468019e490585",
+            "reference": "ba6fb78f727cd09f2a649113b95468019e490585",
             "shasum": ""
         },
         "require": {
@@ -29,13 +59,10 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
             "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
         },
-        "time": "2017-10-23T05:04:54+00:00",
+        "time": "2016-01-18T17:07:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
-            "files": [
-                "phpseclib/bootstrap.php"
-            ],
             "psr-4": {
                 "phpseclib\\": "phpseclib/"
             }
@@ -92,35 +119,5 @@
             "x.509",
             "x509"
         ]
-    },
-    {
-        "name": "jumbojett/openid-connect-php",
-        "version": "0.3.1",
-        "version_normalized": "0.3.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/maltevogl/OpenID-Connect-PHP.git",
-            "reference": "a74aa827cd10ea9294c3b70babc7867f7a764a22"
-        },
-        "archive": {
-            "exclude": [
-                ".*"
-            ]
-        },
-        "require": {
-            "ext-curl": "*",
-            "ext-json": "*",
-            "php": ">=5.4",
-            "phpseclib/phpseclib": "2.0.7"
-        },
-        "time": "2017-11-23T10:56:50+00:00",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "description": "Bare-bones OpenID Connect client"
     }
 ]

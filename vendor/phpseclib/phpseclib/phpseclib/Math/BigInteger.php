@@ -292,7 +292,6 @@ class BigInteger
                 case !isset($versions['Header']):
                 case !isset($versions['Library']):
                 case $versions['Header'] == $versions['Library']:
-                case version_compare($versions['Header'], '1.0.0') >= 0 && version_compare($versions['Library'], '1.0.0') >= 0:
                     define('MATH_BIGINTEGER_OPENSSL_ENABLED', true);
                     break;
                 default:
@@ -360,12 +359,8 @@ class BigInteger
             case 256:
                 switch (MATH_BIGINTEGER_MODE) {
                     case self::MODE_GMP:
-                        $this->value = function_exists('gmp_import') ?
-                            gmp_import($x) :
-                            gmp_init('0x' . bin2hex($x));
-                        if ($this->is_negative) {
-                            $this->value = gmp_neg($this->value);
-                        }
+                        $sign = $this->is_negative ? '-' : '';
+                        $this->value = gmp_init($sign . '0x' . bin2hex($x));
                         break;
                     case self::MODE_BCMATH:
                         // round $len to the nearest 4 (thanks, DavidMJ!)
@@ -552,13 +547,9 @@ class BigInteger
                     return $this->precision > 0 ? str_repeat(chr(0), ($this->precision + 1) >> 3) : '';
                 }
 
-                if (function_exists('gmp_export')) {
-                    $temp = gmp_export($this->value);
-                } else {
-                    $temp = gmp_strval(gmp_abs($this->value), 16);
-                    $temp = (strlen($temp) & 1) ? '0' . $temp : $temp;
-                    $temp = pack('H*', $temp);
-                }
+                $temp = gmp_strval(gmp_abs($this->value), 16);
+                $temp = (strlen($temp) & 1) ? '0' . $temp : $temp;
+                $temp = pack('H*', $temp);
 
                 return $this->precision > 0 ?
                     substr(str_pad($temp, $this->precision >> 3, chr(0), STR_PAD_LEFT), -($this->precision >> 3)) :
@@ -1833,7 +1824,7 @@ class BigInteger
 
         // calculate the appropriate window size.
         // $window_size == 3 if $window_ranges is between 25 and 81, for example.
-        for ($i = 0, $window_size = 1; $i < count($window_ranges) && $e_length > $window_ranges[$i]; ++$window_size, ++$i) {
+        for ($i = 0, $window_size = 1; $e_length > $window_ranges[$i] && $i < count($window_ranges); ++$window_size, ++$i) {
         }
 
         $n_value = $n->value;
@@ -2484,7 +2475,7 @@ class BigInteger
      *
      * Say you have 693 and 609.  The GCD is 21.  Bezout's identity states that there exist integers x and y such that
      * 693*x + 609*y == 21.  In point of fact, there are actually an infinite number of x and y combinations and which
-     * combination is returned is dependent upon which mode is in use.  See
+     * combination is returned is dependant upon which mode is in use.  See
      * {@link http://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity Bezout's identity - Wikipedia} for more information.
      *
      * Here's an example:
@@ -2908,7 +2899,7 @@ class BigInteger
         // (will always result in a smaller number.  ie. ~1 isn't 1111 1110 - it's 0)
         $temp = $this->toBytes();
         if ($temp == '') {
-            return $this->_normalize(new static());
+            return '';
         }
         $pre_msb = decbin(ord($temp[0]));
         $temp = ~$temp;

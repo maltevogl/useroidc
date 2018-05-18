@@ -36,6 +36,9 @@
 
 namespace phpseclib\Crypt;
 
+use phpseclib\Crypt\Base;
+use phpseclib\Crypt\DES;
+
 /**
  * Pure-PHP implementation of Triple DES.
  *
