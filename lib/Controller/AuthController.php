@@ -85,6 +85,7 @@ class AuthController extends Controller {
 				// check if we got a username from keycloak
 				if ($preferred_username != '') {
 					$this->log->debug('Got sub from keycloak connector. Trying to use Keycloak',['app' => $this->appName]);
+					$connector = 'keycloak';
 					$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
 					$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();
 					$user_id = $this->oidc->requestUserInfo('preferred_username');
