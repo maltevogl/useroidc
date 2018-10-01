@@ -133,6 +133,7 @@ class AuthController extends Controller {
 	 				$this->log->debug('login successful', ['app' => $this->appName]);
 	 				$this->usersession->createSessionToken($this->request, $user->getUID(), $user->getUID());
 	 				if ($this->usersession->isLoggedIn()) {
+						$this->session->set('last-password-confirm', time());
 	 				}
 	 		}
 
