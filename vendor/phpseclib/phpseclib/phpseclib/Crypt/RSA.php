@@ -51,6 +51,13 @@
 
 namespace phpseclib\Crypt;
 
+use phpseclib\Crypt\AES;
+use phpseclib\Crypt\Base;
+use phpseclib\Crypt\DES;
+use phpseclib\Crypt\Hash;
+use phpseclib\Crypt\Random;
+use phpseclib\Crypt\RSA;
+use phpseclib\Crypt\TripleDES;
 use phpseclib\Math\BigInteger;
 
 /**
@@ -245,7 +252,7 @@ class RSA
     /**
      * Precomputed Zero
      *
-     * @var \phpseclib\Math\BigInteger
+     * @var array
      * @access private
      */
     var $zero;
@@ -253,7 +260,7 @@ class RSA
     /**
      * Precomputed One
      *
-     * @var \phpseclib\Math\BigInteger
+     * @var array
      * @access private
      */
     var $one;
@@ -494,7 +501,6 @@ class RSA
                         case !isset($versions['Header']):
                         case !isset($versions['Library']):
                         case $versions['Header'] == $versions['Library']:
-                        case version_compare($versions['Header'], '1.0.0') >= 0 && version_compare($versions['Library'], '1.0.0') >= 0:
                             define('CRYPT_RSA_MODE', self::MODE_OPENSSL);
                             break;
                         default:
@@ -1572,15 +1578,6 @@ class RSA
         }
 
         if ($components === false) {
-            $this->comment = null;
-            $this->modulus = null;
-            $this->k = null;
-            $this->exponent = null;
-            $this->primes = null;
-            $this->exponents = null;
-            $this->coefficients = null;
-            $this->publicExponent = null;
-
             return false;
         }
 
@@ -1718,7 +1715,7 @@ class RSA
     function setPrivateKey($key = false, $type = false)
     {
         if ($key === false && !empty($this->publicExponent)) {
-            $this->publicExponent = false;
+            unset($this->publicExponent);
             return true;
         }
 
@@ -1726,7 +1723,7 @@ class RSA
         if (!$rsa->loadKey($key, $type)) {
             return false;
         }
-        $rsa->publicExponent = false;
+        unset($rsa->publicExponent);
 
         // don't overwrite the old key if the new key is invalid
         $this->loadKey($rsa);
@@ -1770,7 +1767,7 @@ class RSA
      * for invalid values.
      * @return mixed
      */
-    function getPublicKeyFingerprint($algorithm = 'md5')
+    public function getPublicKeyFingerprint($algorithm = 'md5')
     {
         if (empty($this->modulus) || empty($this->publicExponent)) {
             return false;
@@ -2095,14 +2092,8 @@ class RSA
      */
     function _exponentiate($x)
     {
-        switch (true) {
-            case empty($this->primes):
-            case $this->primes[1]->equals($this->zero):
-            case empty($this->coefficients):
-            case $this->coefficients[2]->equals($this->zero):
-            case empty($this->exponents):
-            case $this->exponents[1]->equals($this->zero):
-                return $x->modPow($this->exponent, $this->modulus);
+        if (empty($this->primes) || empty($this->coefficients) || empty($this->exponents)) {
+            return $x->modPow($this->exponent, $this->modulus);
         }
 
         $num_primes = count($this->primes);
@@ -2423,7 +2414,7 @@ class RSA
         $db = $maskedDB ^ $dbMask;
         $lHash2 = substr($db, 0, $this->hLen);
         $m = substr($db, $this->hLen);
-        if (!$this->_equals($lHash, $lHash2)) {
+        if ($lHash != $lHash2) {
             user_error('Decryption error');
             return false;
         }
@@ -2577,7 +2568,7 @@ class RSA
         // be output.
 
         $emLen = ($emBits + 1) >> 3; // ie. ceil($emBits / 8)
-        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        $sLen = $this->sLen ? $this->sLen : $this->hLen;
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {
@@ -2615,7 +2606,7 @@ class RSA
         // be output.
 
         $emLen = ($emBits + 1) >> 3; // ie. ceil($emBits / 8);
-        $sLen = $this->sLen !== null ? $this->sLen : $this->hLen;
+        $sLen = $this->sLen ? $this->sLen : $this->hLen;
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {

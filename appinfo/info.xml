@@ -12,6 +12,6 @@
     <category>auth</category>
     <bugs>https://github.com/maltevogl/useroidc</bugs>
     <dependencies>
-        <nextcloud min-version="11" max-version="13"/>
+        <nextcloud min-version="11" max-version="14"/>
     </dependencies>
 </info>

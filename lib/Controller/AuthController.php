@@ -1,6 +1,7 @@
 <?php
 namespace OCA\UserOidc\Controller;
 
+use OC\Files\Filesystem;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -53,12 +54,7 @@ class AuthController extends Controller {
 	 		$this->oidc->setRedirectUrl($redirectUrl);
 	 		$this->oidc->authenticate();
 
-	 		$this->session['oidc_access_token'] = $this->oidc->getAccessToken();
-	 		$this->log->debug('Got access token:' . $this->session['oidc_access_token'],['app' => $this->appName]);
-	 		$this->session['oidc_id_token'] = $this->oidc->getIdToken();
-	 		$this->log->debug('Got id token:' . $this->session['oidc_id_token'],['app' => $this->appName]);
-
-	 		$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();#session['oidc_id_token']['sub'];
+	 		$this->session['oidc_sub_claim'] = $this->oidc->getSubClaim();
 	 		$this->log->debug('Got sub claim:' . $this->session['oidc_sub_claim'],['app' => $this->appName]);
 	 		$sub_array = explode('  ',trim($this->session['oidc_sub_claim']));
 	 		$user_sub = reset($sub_array);
@@ -66,8 +62,9 @@ class AuthController extends Controller {
 	 		$this->log->debug('Got user from sub:' . $user_sub,['app' => $this->appName]);
 	 		$this->log->debug('Got connector from sub:' . $connector,['app' => $this->appName]);
 
-	 		if (strcmp($connector, 'github') == 0 or strcmp($connector, 'saml') == 0) {
-	 			$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
+
+	 		if (strcmp($connector, 'github') == 0 or strcmp($connector, 'saml') == 0 or strcmp($connector, 'shibboleth') == 0) {
+				$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
 	 			$this->log->debug('Got name claim:' . $this->session['oidc_name_claim'],['app' => $this->appName]);
 	 			$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();
 	 			$this->log->debug('Got email claim:' . $this->session['oidc_email_claim'],['app' => $this->appName]);
@@ -84,17 +81,32 @@ class AuthController extends Controller {
 	 			$email = '';
 	 			$name =  '';
 	 		} else {
-	 			$this->log->debug('Got sub from unknown connector. Login not allowed.',['app' => $this->appName]);
-	 			return new RedirectResponse('/');
+				$preferred_username = $this->oidc->requestUserInfo('preferred_username');
+				// check if we got a username from keycloak
+				if ($preferred_username != '') {
+					$this->log->debug('Got sub from keycloak connector. Trying to use Keycloak',['app' => $this->appName]);
+					$connector = 'keycloak';
+					$this->session['oidc_name_claim'] = $this->oidc->getNameClaim();
+					$this->session['oidc_email_claim'] = $this->oidc->getEmailClaim();
+					$user_id = $this->oidc->requestUserInfo('preferred_username');
+					$email = $this->session['oidc_email_claim'];
+					$name = $this->session['oidc_name_claim'];
+					$this->log->debug('Got userid:' . $user_id,['app' => $this->appName]);
+					$this->log->debug('Got name claim:' . $name,['app' => $this->appName]);
+					$this->log->debug('Got email claim:' .$email,['app' => $this->appName]);
+				} else {
+		 			$this->log->debug('Got sub from unknown connector. Login not allowed.',['app' => $this->appName]);
+		 			return new RedirectResponse('/');
+				}
 	 		}
 
 	 		$user = $this->usermanager->get($user_id);
 
 	 		if(!$user) {
 	 				$this->log->debug(implode(' ',array('Got unknown user:',$user_id,'from connector',$connector)),['app' => $this->appName]);
-	 				$whitelist = file('apps/useroidc/whitelist.txt',FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	 				$whitelist = file( __DIR__ . '/../../whitelist.txt',FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 	 				$this->log->debug('Whitelist: '. implode(',',$whitelist),['app' => $this->appName]);
-	 				if( in_array($connector,$whitelist) )
+	 				if( in_array($connector,$whitelist) or  in_array($user_id,$whitelist) )
 	 				{
 	 					$this->log->debug($user_id.' is whitelisted. Will add to db.',['app' => $this->appName]);
 	 					$user = $this->createUser($user_id, $name, $email);
@@ -121,6 +133,7 @@ class AuthController extends Controller {
 	 				$this->log->debug('login successful', ['app' => $this->appName]);
 	 				$this->usersession->createSessionToken($this->request, $user->getUID(), $user->getUID());
 	 				if ($this->usersession->isLoggedIn()) {
+						$this->session->set('last-password-confirm', time());
 	 				}
 	 		}
 
@@ -136,6 +149,10 @@ class AuthController extends Controller {
 	 				$user = $this->usermanager->createUser($uid, $random_password);
 	 				$user->setEMailAddress($email);
 	 				$user->setDisplayName($name);
+					$user->setEnabled(true);
+					$user->setQuota('1GB');
+
+					Filesystem::init($user->getUID(), '');
 	 				return $user;
 	 		}
 	 }
